@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Examiner's Desk — Writing Evaluation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f7;--card:#fff;--ink:#1b2130;--mute:#667085;--line:#e6e4de;--green:#14594b;--orange:#d98a2b;--soft:#f1f0ec;--bad:#b3402a;--serif:'Fraunces',Georgia,'Times New Roman',serif;--sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--line);background:var(--bg)}
+.brand{display:flex;gap:14px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center}
+.name{font:500 20px/1.2 var(--serif)}
+.sub{font-size:13px;letter-spacing:.2em;color:var(--mute)}
+.by{font-size:14px;color:var(--mute)}
+main{max-width:920px;margin:0 auto;padding:36px 24px 80px}
+.eyebrow{margin:0 0 12px;font-size:13px;font-weight:600;letter-spacing:.22em;color:var(--orange)}
+h1{margin:0 0 20px;font:400 clamp(38px,6vw,60px)/1.05 var(--serif);letter-spacing:-.02em;max-width:760px}
+.lead{max-width:680px;color:var(--mute);font-size:18px;margin:0 0 32px}
+.systems{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.sys{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 20px 18px;cursor:pointer;transition:.15s}
+.sys.on{background:#f3f3f1;border-color:#9bb5ab}
+.sys h3{margin:0 0 12px;font-size:14px;font-weight:600;letter-spacing:.2em;color:var(--mute)}
+.pills{display:flex;gap:10px;margin-bottom:12px}
+.pills button{border:0;background:var(--soft);color:var(--ink);padding:8px 18px;border-radius:999px;font:500 15px var(--sans);cursor:pointer}
+.pills button.on{background:var(--green);color:#fff}
+.desc{margin:0;color:var(--mute);font-size:15px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px;margin-bottom:20px}
+.lbl{display:block;font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--mute);margin-bottom:10px}
+.lbl small{letter-spacing:0;font-weight:400}
+.row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:20px}
+.meta{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.wc,.clock{font:13px ui-monospace,Menlo,monospace;color:var(--mute)}.wc.ok{color:var(--green)}
+textarea,input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);resize:vertical}
+textarea:focus,input:focus{outline:2px solid #9bb5ab}
+button{font-family:var(--sans);cursor:pointer}
+.ghost{border:1px solid var(--line);background:none;color:var(--ink);padding:5px 12px;border-radius:999px;font-size:13px}
+.primary{background:var(--green);color:#fff;border:0;padding:13px 26px;border-radius:999px;font-size:15px;font-weight:600;margin-top:16px}
+.primary:disabled{opacity:.5}
+#status{margin-left:14px;color:var(--mute);font-size:14px}
+.hidden{display:none}
+.band{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 16px}
+.big{background:#eef4f1;border-radius:14px;padding:12px 20px;text-align:center;font-size:13px;color:var(--mute)}
+.big b{display:block;font:500 34px/1.1 var(--serif);color:var(--green)}
+.crit{border-top:1px solid var(--line);padding:12px 0}
+.crit h4{margin:0 0 4px;display:flex;justify-content:space-between}
+.crit p{margin:4px 0;color:var(--mute)}
+.err{border-left:3px solid var(--bad);padding:4px 12px;margin:8px 0}
+.err del{color:var(--bad)}.err ins{color:var(--green);text-decoration:none;font-weight:600}
+.sample{background:#eef4f1;padding:16px;border-radius:14px}
+#result h2{font:500 24px var(--serif);margin:24px 0 6px}
+.hist{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);cursor:pointer;font-size:15px}
+@media(max-width:640px){.systems{grid-template-columns:1fr}.panel{padding:20px}}
+
+.by{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--mute);font:14px var(--sans)}
+input[type=file]{padding:10px}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6a4.5 4.5 0 0 0-6.4 0L5 14.8V19h4.2L18 10.2A4.5 4.5 0 0 0 20.2 6z"/><path d="M16 8 3 21M9 15h6"/></svg></span>
+    <div><div class="name">The Examiner's Desk</div><div class="sub">WRITING EVALUATION</div></div>
+  </div>
+  <button class="by" id="settingsBtn">⚙ Gemini API key</button>
+</header>
+
+<main>
+  <p class="eyebrow">TASK 1 · TASK 2 · IELTS &amp; NATIONAL COMPETITION</p>
+  <h1>Know exactly what your writing is worth.</h1>
+  <p class="lead">Paste your answer and get an examiner-grade assessment against the official IELTS band descriptors or the national competition rubric — criterion by criterion, with the exact sentences to fix.</p>
+
+  <div class="systems" id="systems">
+    <div class="sys" data-sys="ielts">
+      <h3>IELTS</h3>
+      <div class="pills"><button data-task="task1">Task 1</button><button data-task="task2">Task 2</button></div>
+      <p class="desc"></p>
+    </div>
+    <div class="sys" data-sys="nec">
+      <h3>NATIONAL COMPETITION</h3>
+      <div class="pills"><button data-task="task1">Task 1</button><button data-task="task2">Task 2</button></div>
+      <p class="desc"></p>
+    </div>
+  </div>
+
+  <section class="panel">
+    <label class="lbl" for="prompt">TASK PROMPT <small>(optional)</small></label>
+    <textarea id="prompt" rows="3" placeholder="Paste the question here. For Task 1, describe or paste the chart data too."></textarea>
+    <label class="lbl" for="img" style="margin-top:14px">CHART IMAGE <small>(optional — Task 1: Gemini reads the picture)</small></label>
+    <input id="img" type="file" accept="image/*">
+
+    <div class="row">
+      <label class="lbl" for="essay">YOUR ANSWER</label>
+      <span class="meta"><span id="wc" class="wc">0 words</span>
+        <span id="clock" class="clock">40:00</span><button id="timerBtn" class="ghost">Start timer</button></span>
+    </div>
+    <textarea id="essay" rows="16" placeholder="Paste or type your answer here..."></textarea>
+
+    <button id="gradeBtn" class="primary">Evaluate my writing</button>
+    <span id="status"></span>
+  </section>
+
+  <section id="keyCard" class="panel hidden">
+    <label class="lbl" for="keyInput">GEMINI API KEY <small>(stored only in this browser — never in the GitHub repo)</small></label>
+    <input id="keyInput" type="password" placeholder="AIza...">
+    <label class="lbl" for="modelInput" style="margin-top:14px">MODEL <small>(leave empty for gemini-3.6-flash)</small></label>
+    <input id="modelInput" type="text" placeholder="gemini-3.6-flash">
+    <button id="keySave" class="primary">Save</button>
+  </section>
+
+  <section id="result" class="panel hidden"></section>
+
+  <section class="panel hidden" id="historyCard">
+    <label class="lbl">HISTORY <small>(stored in this browser/app)</small></label>
+    <div id="history"></div>
+  </section>
+</main>
+<script type="module">
+// ===== BAND DESCRIPTORS — AI dùng xuyên suốt web =====
+// IELTS Writing Band Descriptors (public version, updated May 2023), rút gọn theo từng band 9→1.
+const IELTS = {
+  TA: { name: 'Task Achievement (Task 1 Academic)',
+    9: 'All requirements fully and appropriately satisfied; extremely rare lapses in content.',
+    8: 'Covers all requirements appropriately, relevantly, sufficiently; key features skilfully selected, clearly presented, highlighted and illustrated; occasional omissions/lapses.',
+    7: 'Covers the requirements; content relevant and accurate (a few omissions/lapses); format appropriate; selected key features clearly highlighted but could be more fully illustrated/extended; CLEAR OVERVIEW, data appropriately categorised, main trends/differences identified.',
+    6: 'Focuses on requirements; appropriate format; key features covered and adequately highlighted; a relevant overview is ATTEMPTED; information appropriately selected and supported with figures/data; some irrelevant/inaccurate info in details; some details missing or excessive.',
+    5: 'Generally addresses requirements; format may be inappropriate in places; key features not adequately covered; recounting of detail mainly mechanical; there may be NO DATA to support the description; tendency to focus on details without the bigger picture; irrelevant/inaccurate material in key areas; limited detail.',
+    4: 'Attempts the task; few key features selected; format may be inappropriate; features presented may be irrelevant, repetitive, inaccurate.',
+    '3-1': '3: does not address requirements (maybe misread data), largely irrelevant, limited and repetitive info. 2: content barely relates to the task. 1: wholly unrelated.' },
+  TR: { name: 'Task Response (Task 2)',
+    9: 'Prompt appropriately addressed and explored in depth; clear, fully developed position directly answering the question; ideas relevant, fully extended, well supported; extremely rare lapses.',
+    8: 'Prompt appropriately and sufficiently addressed; clear, well-developed position; ideas relevant, well extended and supported; occasional omissions/lapses.',
+    7: 'Main parts of the prompt appropriately addressed; clear and developed position; main ideas extended and supported but may over-generalise or lack focus/precision.',
+    6: 'Main parts addressed (some more fully than others); appropriate format; position directly relevant but conclusions may be unclear, unjustified or repetitive; some main ideas insufficiently developed; some support less relevant/inadequate.',
+    5: 'Main parts INCOMPLETELY addressed; format may be inappropriate in places; position expressed but development not always clear; main ideas limited/insufficiently developed and/or irrelevant detail; some repetition.',
+    4: 'Prompt tackled minimally or tangentially; format may be inappropriate; position discernible only with careful reading; main ideas hard to identify, lacking relevance/clarity/support; large parts repetitive.',
+    '3-1': '3: no part adequately addressed or prompt misunderstood; no relevant position; few ideas. 2: barely related, no position. 1: wholly unrelated.' },
+  CC: { name: 'Coherence & Cohesion',
+    9: 'Message followed effortlessly; cohesion very rarely attracts attention; minimal lapses; paragraphing skilfully managed.',
+    8: 'Message followed with ease; ideas logically sequenced, cohesion well managed; occasional lapses; paragraphing sufficient and appropriate.',
+    7: 'Logically organised, clear progression throughout (few lapses); range of cohesive devices incl. reference and substitution used flexibly but with some inaccuracies or over/under use; paragraphing generally effective (Task 2: ideas within a paragraph generally logical).',
+    6: 'Generally coherent, clear overall progression; cohesive devices used to some good effect but cohesion within/between sentences may be faulty or mechanical (misuse, overuse, omission); reference/substitution may lack flexibility or clarity; (Task 2: paragraphing/central topic not always clear).',
+    5: 'Organisation evident but not wholly logical, may lack overall progression; ideas can be followed but sentences not fluently linked; limited/overused cohesive devices with inaccuracy; repetitive reference/substitution; (Task 2: paragraphing may be inadequate or missing).',
+    4: 'Ideas evident but not arranged coherently, no clear progression; relationships unclear; basic cohesive devices inaccurate/repetitive; inaccurate or missing referencing; (Task 2: may be no paragraphing/clear main topic).',
+    '3-1': '3: no logical organisation, minimal cohesive devices. 2: little relevant message or entirely off-topic. 1: fails to communicate.' },
+  LR: { name: 'Lexical Resource',
+    9: 'Full flexibility and precise use; wide range used accurately with very natural, sophisticated control; spelling/word-formation errors extremely rare.',
+    8: 'Wide resource fluently and flexibly used for precise meanings; skilful use of uncommon/idiomatic items despite occasional inaccuracies in word choice/collocation; occasional spelling/word-formation errors, minimal impact.',
+    7: 'Sufficient for some flexibility and precision; some ability to use less common/idiomatic items; awareness of style and collocation though inappropriacies occur; only a few spelling/word-formation errors.',
+    6: 'Generally adequate; meaning generally clear despite restricted range or lack of precision; risk-takers show wider range but more inaccuracy; some spelling/word-formation errors that do not impede.',
+    5: 'Limited but minimally adequate; simple vocabulary may be accurate but little variation; frequent lapses in appropriacy, simplifications and repetitions; noticeable errors may cause some difficulty.',
+    4: 'Limited and inadequate for (or unrelated to) the task; basic, repetitive; inappropriate lexical chunks (memorised/formulaic/from input); errors may impede meaning.',
+    '3-1': '3: inadequate (maybe underlength), over-dependence on input/memorised language, errors predominate. 2: extremely limited. 1: only isolated words.' },
+  GRA: { name: 'Grammatical Range & Accuracy',
+    9: 'Wide range used with full flexibility and control; punctuation and grammar appropriate throughout; minor errors extremely rare.',
+    8: 'Wide range flexibly and accurately used; majority of sentences error-free; punctuation well managed; occasional non-systematic errors, minimal impact.',
+    7: 'Variety of complex structures with some flexibility and accuracy; generally well controlled; error-free sentences frequent; a few errors may persist but do not impede.',
+    6: 'Mix of simple and complex forms but limited flexibility; complex structures less accurate than simple ones; errors occur but rarely impede.',
+    5: 'Limited, repetitive range; complex sentences attempted but faulty, greatest accuracy on simple sentences; frequent errors cause some difficulty; punctuation may be faulty.',
+    4: 'Very limited range; subordinate clauses rare, simple sentences predominate; frequent errors may impede meaning; punctuation often faulty.',
+    '3-1': '3: errors predominate and prevent meaning (length may be insufficient). 2: little or no evidence of sentence forms. 1: no rateable language.' },
+};
+
+// Rubric NEC (OFFICIAL PRACTICE RUBRIC) — nguồn: người dùng cung cấp. Sửa trực tiếp tại đây nếu BTC cập nhật.
+const NEC = {
+  task1: { total: 2.0, criteria: [
+    { code: 'TA', name: 'Task Achievement', max: 0.5, desc: 'Accurate overview; select, classify and compare key data; integrate both figures/sources; use projection language correctly.' },
+    { code: 'CC', name: 'Coherence & Cohesion', max: 0.5, desc: 'Group information logically; maintain clear progression and cohesive links; avoid mechanical year-by-year listing.' },
+    { code: 'LR', name: 'Lexical Resource', max: 0.5, desc: 'Use accurate C1–C2 data-description vocabulary and collocations; avoid repetition.' },
+    { code: 'GRA', name: 'Grammar Range & Accuracy', max: 0.5, desc: 'Use a varied range of complex structures naturally and maintain near-error-free accuracy.' },
+  ] },
+  task2: { total: 3.0, criteria: [
+    { code: 'TR', name: 'Task Response', max: 0.75, desc: 'Address all three views; maintain a clear, consistent and nuanced position; support evaluation with specific reasoning/examples.' },
+    { code: 'CC', name: 'Coherence & Cohesion', max: 0.75, desc: 'One controlling idea per paragraph; coherent progression; effective referencing and lexical chains; avoid mechanical Firstly/Secondly sequencing.' },
+    { code: 'LR', name: 'Lexical Resource', max: 0.75, desc: 'Paraphrase the topic effectively; use precise finance/behaviour lexis and natural C2-level collocations without forced sophistication.' },
+    { code: 'GRA', name: 'Grammatical Range & Accuracy', max: 0.75, desc: 'Use a wide, controlled range such as inversion, concessive inversion, reduced clauses, clefts and nominalisation where natural; maintain high accuracy.' },
+  ] },
+};
+
+const LEVELS = ['9', '8', '7', '6', '5', '4', '3-1'];
+
+function buildSystemPrompt(task, mode) {
+  const isT1 = task === 'task1', first = isT1 ? 'TA' : 'TR', nec = mode === 'nec';
+  const nt = NEC[task];
+  const ielts = [first, 'CC', 'LR', 'GRA'].map(k =>
+    `- ${k} (${IELTS[k].name}):\n` + LEVELS.map(l => `   Band ${l}: ${IELTS[k][l]}`).join('\n')).join('\n');
+  const necTxt = nt.criteria.map(c => `- ${c.code} (${c.name}) — tối đa ${c.max} điểm: ${c.desc}`).join('\n');
+
+  return `Bạn là giám khảo IELTS Writing giàu kinh nghiệm và huấn luyện viên cho cuộc thi NEC (National English Competition). Chấm ${nec ? `bài NEC ${isT1 ? 'Task 1 (mô tả số liệu)' : 'Task 2 (bài luận)'}` : `IELTS Writing ${isT1 ? 'Task 1 (Academic, tối thiểu 150 từ)' : 'Task 2 (tối thiểu 250 từ)'}`}.
+Chấm nghiêm, sát thực tế, không nâng điểm; dẫn chứng bằng câu/cụm từ cụ thể trong bài.
+${nec ? 'Chỉ dùng rubric NEC bên dưới, không dùng thang band IELTS.' : `Bài chỉ đạt một band khi đáp ứng đầy đủ các đặc điểm tích cực của band đó; đặc điểm tiêu cực (vd. ${isT1 ? 'không có overview, thiếu số liệu, liệt kê máy móc' : 'trả lời chưa đủ các phần của đề, không rõ quan điểm, thiếu đoạn văn'}) giới hạn band. Dưới 20 từ = Band 1; chép lại đề phải loại bỏ; học thuộc lòng hoàn toàn = Band 0; thiếu số từ thì phạt. Band theo bước 0.5; Overall = trung bình 4 tiêu chí làm tròn tới 0.5 gần nhất (x.25 lên x.5, x.75 lên số nguyên kế tiếp).`}
+${isT1 ? 'Nếu người dùng đính kèm ảnh biểu đồ/bảng, hãy đối chiếu số liệu trong bài với ảnh và chỉ ra chỗ sai/thiếu.' : ''}
+
+${nec ? `THANG NEC — OFFICIAL PRACTICE RUBRIC, tổng ${nt.total} điểm (chấm theo bước 0.05; mỗi tiêu chí không vượt quá điểm tối đa; total = tổng 4 tiêu chí; đánh giá theo mức C1–C2 như rubric yêu cầu):\n${necTxt}` : `THANG IELTS (bám sát descriptor chính thức, nội suy giữa các mốc):\n${ielts}`}
+
+Viết nhận xét bằng TIẾNG VIỆT, trích dẫn câu lỗi/câu mẫu bằng TIẾNG ANH. Chỉ trả về MỘT JSON hợp lệ, không markdown, theo schema:
+{
+ "word_count": number,
+ ${nec
+   ? `"nec": {"total": number, "criteria": [{"code":"${nt.criteria.map(c => c.code).join('|')}","score": number,"max": number,"comment":"vì sao mất điểm, đối chiếu rubric","to_full_marks":"cần làm gì để đạt điểm tối đa"}]},`
+   : `"ielts": {"overall": number, "criteria": [{"code":"${first}|CC|LR|GRA","band": number,"comment":"vì sao đạt band này, đối chiếu descriptor","to_next_band":"cần làm gì để lên band kế tiếp"}]},`}
+ "errors": [{"original":"câu/cụm gốc","fix":"bản sửa","reason":"giải thích ngắn"}],
+ "vocab_upgrades": [{"from":"từ/cụm đã dùng","to":"lựa chọn tốt hơn"}],
+ "improved_sample": "viết lại 1 đoạn (đoạn yếu nhất) ở mức ${nec ? 'C2' : 'band 8'}",
+ "top_priorities": ["3 việc quan trọng nhất cần luyện tiếp"]
+}`;
+}
+
+// ===== APP =====
+const $ = id => document.getElementById(id);
+const state = { task: 'task2', mode: 'ielts', timer: null, left: 2400 };
+const pick = { ielts: 'task2', nec: 'task1' }; // task đang chọn trong mỗi thẻ
+const DESC = {
+  ielts: { task1: 'A description of a chart, graph, table, map or process.', task2: 'An argumentative or discursive essay.' },
+  nec: { task1: 'Data description, 2.0 points total.', task2: 'Argumentative essay, 3.0 points total.' },
+};
+
+function refreshCards() {
+  document.querySelectorAll('.sys').forEach(c => {
+    const s = c.dataset.sys, on = s === state.mode;
+    c.classList.toggle('on', on);
+    c.querySelectorAll('button').forEach(b => b.classList.toggle('on', on && b.dataset.task === pick[s]));
+    c.querySelector('.desc').textContent = DESC[s][pick[s]];
+  });
+  state.task = pick[state.mode];
+  resetTimer(); $('essay').oninput();
+}
+$('systems').onclick = e => {
+  const c = e.target.closest('.sys'); if (!c) return;
+  const b = e.target.closest('button');
+  state.mode = c.dataset.sys;
+  if (b) pick[state.mode] = b.dataset.task;
+  refreshCards();
+};
+
+function resetTimer() {
+  clearInterval(state.timer); state.timer = null;
+  state.left = state.task === 'task1' ? 1200 : 2400;
+  $('timerBtn').textContent = 'Start timer'; showClock();
+}
+function showClock() { $('clock').textContent = `${String(Math.floor(state.left / 60)).padStart(2, '0')}:${String(state.left % 60).padStart(2, '0')}`; }
+$('timerBtn').onclick = () => {
+  if (state.timer) return resetTimer();
+  $('timerBtn').textContent = 'Stop';
+  state.timer = setInterval(() => { state.left--; showClock(); if (state.left <= 0) { clearInterval(state.timer); alert("Time's up!"); } }, 1000);
+};
+$('essay').oninput = () => {
+  const n = ($('essay').value.trim().match(/\S+/g) || []).length;
+  const min = state.mode === 'ielts' ? (state.task === 'task1' ? 150 : 250) : 0;
+  $('wc').textContent = min ? `${n} words · min ${min}` : `${n} words`;
+  $('wc').classList.toggle('ok', n > 0 && n >= min);
+};
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function render(r) {
+  let h = '';
+  if (r.ielts) {
+    h += `<h2>IELTS</h2><div class="band"><div class="big"><b>${r.ielts.overall}</b>Overall</div>`;
+    h += r.ielts.criteria.map(c => `<div class="big"><b>${c.band}</b>${esc(c.code)}</div>`).join('') + '</div>';
+    h += r.ielts.criteria.map(c => `<div class="crit"><h4>${esc(c.code)} <span>${c.band}</span></h4><p>${esc(c.comment)}</p><p><b>Lên band kế tiếp:</b> ${esc(c.to_next_band)}</p></div>`).join('');
+  }
+  if (r.nec) {
+    const mx = r.nec.criteria.reduce((t, c) => t + (c.max || 0), 0);
+    h += `<h2>NEC</h2><div class="band"><div class="big"><b>${r.nec.total}</b>Total / ${mx}</div>`;
+    h += r.nec.criteria.map(c => `<div class="big"><b>${c.score}</b>${esc(c.code)} / ${c.max}</div>`).join('') + '</div>';
+    h += r.nec.criteria.map(c => `<div class="crit"><h4>${esc(c.code)} <span>${c.score} / ${c.max}</span></h4><p>${esc(c.comment)}</p><p><b>Để đạt điểm tối đa:</b> ${esc(c.to_full_marks)}</p></div>`).join('');
+  }
+  if (r.errors?.length) h += '<h2>Lỗi cần sửa</h2>' + r.errors.map(e => `<div class="err"><del>${esc(e.original)}</del> → <ins>${esc(e.fix)}</ins><br><small>${esc(e.reason)}</small></div>`).join('');
+  if (r.vocab_upgrades?.length) h += '<h2>Nâng cấp từ vựng</h2>' + r.vocab_upgrades.map(v => `<div>${esc(v.from)} → <b>${esc(v.to)}</b></div>`).join('');
+  if (r.improved_sample) h += `<h2>Đoạn viết lại (band 8)</h2><div class="sample">${esc(r.improved_sample)}</div>`;
+  if (r.top_priorities?.length) h += '<h2>Ưu tiên luyện tiếp</h2><ol>' + r.top_priorities.map(p => `<li>${esc(p)}</li>`).join('') + '</ol>';
+  $('result').innerHTML = h; $('result').classList.remove('hidden');
+  $('result').scrollIntoView({ behavior: 'smooth' });
+}
+
+function saveHistory(r) {
+  try {
+    const list = JSON.parse(localStorage.getItem('wl_hist') || '[]');
+    list.unshift({ t: Date.now(), task: state.task, mode: state.mode, prompt: $('prompt').value, essay: $('essay').value, r });
+    localStorage.setItem('wl_hist', JSON.stringify(list.slice(0, 30)));
+  } catch {}
+  loadHistory();
+}
+function loadHistory() {
+  let list = []; try { list = JSON.parse(localStorage.getItem('wl_hist') || '[]'); } catch {}
+  $('historyCard').classList.toggle('hidden', !list.length);
+  $('history').innerHTML = list.map((x, i) => `<div class="hist" data-i="${i}"><span>${new Date(x.t).toLocaleString('vi-VN')} · ${x.task === 'task1' ? 'Task 1' : 'Task 2'}</span><b>${x.r.ielts ? 'IELTS ' + x.r.ielts.overall : 'NEC ' + x.r.nec.total}</b></div>`).join('');
+  $('history').onclick = e => {
+    const row = e.target.closest('.hist'); if (!row) return;
+    const x = list[row.dataset.i]; $('prompt').value = x.prompt; $('essay').value = x.essay; $('essay').oninput(); render(x.r);
+  };
+}
+
+async function fileToPart(f) {
+  const b64 = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result.split(',')[1]); r.onerror = no; r.readAsDataURL(f); });
+  return { inlineData: { mimeType: f.type, data: b64 } };
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const FALLBACK = 'gemini-3.5-flash-lite'; // dùng khi model chính quá tải
+
+async function gradeWithGemini({ task, mode, prompt, essay }) {
+  const key = localStorage.getItem('wl_key');
+  const model = localStorage.getItem('wl_model') || 'gemini-3.6-flash';
+  const words = (essay.trim().match(/\S+/g) || []).length;
+  const parts = [{ text: `ĐỀ BÀI:\n${prompt || '(không có)'}\n\nBÀI LÀM (${words} từ):\n${essay}` }];
+  const f = $('img').files[0];
+  if (f) parts.push(await fileToPart(f), { text: '(Ảnh đính kèm là biểu đồ/dữ liệu của đề Task 1.)' });
+  const body = JSON.stringify({
+    systemInstruction: { parts: [{ text: buildSystemPrompt(task, mode) }] },
+    contents: [{ role: 'user', parts }],
+    generationConfig: { responseMimeType: 'application/json' },
+  });
+  const chain = model === FALLBACK ? [model] : [model, FALLBACK];
+  let lastErr;
+  for (const m of chain) {
+    for (let i = 0; i < 3; i++) {
+      if (m !== model || i) $('status').textContent = `Server busy — retrying (${m}, attempt ${i + 1}/3)...`;
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key }, body,
+      });
+      const d = await res.json().catch(() => ({}));
+      if (res.ok) {
+        const text = (d.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
+        return JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+      }
+      lastErr = new Error(d.error?.message || 'Gemini error ' + res.status);
+      if (![429, 500, 503].includes(res.status)) throw lastErr; // lỗi thật (sai key, v.v.) thì dừng ngay
+      await sleep(2500 * (i + 1));
+    }
+  }
+  throw lastErr;
+}
+
+$('gradeBtn').onclick = async () => {
+  if (!localStorage.getItem('wl_key')) { $('keyCard').classList.remove('hidden'); $('status').textContent = 'Paste your Gemini API key first.'; return; }
+  if ($('essay').value.trim().length < 30) { $('status').textContent = 'Your answer is too short.'; return; }
+  $('gradeBtn').disabled = true; $('status').textContent = 'Marking... (20–60 seconds)';
+  try {
+    const r = await gradeWithGemini({ task: state.task, mode: state.mode, prompt: $('prompt').value, essay: $('essay').value });
+    render(r); saveHistory(r); $('status').textContent = '';
+  } catch (e) {
+    $('status').textContent = 'Error: ' + e.message;
+    if (/api key|API_KEY|permission|401|403/i.test(e.message)) $('keyCard').classList.remove('hidden');
+  }
+  $('gradeBtn').disabled = false;
+};
+
+$('settingsBtn').onclick = () => {
+  $('keyInput').value = localStorage.getItem('wl_key') || '';
+  $('modelInput').value = localStorage.getItem('wl_model') || '';
+  $('keyCard').classList.toggle('hidden');
+};
+$('keySave').onclick = () => {
+  const k = $('keyInput').value.trim(), m = $('modelInput').value.trim();
+  if (k) localStorage.setItem('wl_key', k);
+  m ? localStorage.setItem('wl_model', m) : localStorage.removeItem('wl_model');
+  $('keyCard').classList.add('hidden'); $('status').textContent = 'Saved.';
+};
+
+refreshCards(); loadHistory();
+
+</script>
+</body>
+</html>
